@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Momas QRCode</title>
+    <style>
+         body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        margin-top: 0;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      input[type="text"] {
+        display: block;
+        width: 100%;
+        padding: 5px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+      button {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      #qrcode {
+        margin-top: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>QR Code Generator</h1>
+    <label for="url">Enter URL:</label>
+    <input type="text" id="url" name="url" />
+    <button onclick="generateQR()">Generate QR Code</button>
+    <div id="qrcode"></div>
+    <button onclick="downloadPNG()">Download as PNG</button>
+    <button onclick="downloadJPEG()">Download as JPEG</button>
+    <button onclick="downloadSVG()">Download as SVG</button>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script>
+      var qr;
+      function generateQR() {
+        var url = document.getElementById("url").value;
+        qr = new QRCode(document.getElementById("qrcode"), {
+          text: url,
+          width: 256,
+          height: 256,
+          colorDark: "#000000",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H,
+        });
+      }
+      function downloadPNG() {
+        var canvas = document.getElementById("qrcode").querySelector("canvas");
+        var pngUrl = canvas.toDataURL("image/png");
+        var a = document.createElement("a");
+        a.href = pngUrl;
+        a.download = "qrcode.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      function downloadJPEG() {
+        var canvas = document.getElementById("qrcode").querySelector("canvas");
+        var jpegUrl = canvas.toDataURL("image/jpeg", 0.8);
+        var a = document.createElement("a");
+        a.href = jpegUrl;
+        a.download = "qrcode.jpeg";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      function downloadSVG() {
+        var svg = document.getElementById("qrcode").querySelector("svg");
+        var svgUrl =
+          "data:image/svg+xml," +
+          encodeURIComponent(new XMLSerializer().serializeToString(svg));
+        var a = document.createElement("a");
+        a.href = svgUrl;
+        a.download = "qrcode.svg";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+    </script>
+  </body>
+</html>
